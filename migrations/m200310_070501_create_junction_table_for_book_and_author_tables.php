@@ -29,15 +29,6 @@ class m200310_070501_create_junction_table_for_book_and_author_tables extends Mi
             'book_id'
         );
 
-        // add foreign key for table `{{%book}}`
-        $this->addForeignKey(
-            '{{%fk-book_author-book_id}}',
-            '{{%book_author}}',
-            'book_id',
-            '{{%book}}',
-            'id',
-            'CASCADE'
-        );
 
         // creates index for column `author_id`
         $this->createIndex(
@@ -46,15 +37,7 @@ class m200310_070501_create_junction_table_for_book_and_author_tables extends Mi
             'author_id'
         );
 
-        // add foreign key for table `{{%author}}`
-        $this->addForeignKey(
-            '{{%fk-book_author-author_id}}',
-            '{{%book_author}}',
-            'author_id',
-            '{{%author}}',
-            'id',
-            'CASCADE'
-        );
+
     }
 
     /**
@@ -62,11 +45,7 @@ class m200310_070501_create_junction_table_for_book_and_author_tables extends Mi
      */
     public function safeDown()
     {
-        // drops foreign key for table `{{%book}}`
-        $this->dropForeignKey(
-            '{{%fk-book_author-book_id}}',
-            '{{%book_author}}'
-        );
+
 
         // drops index for column `book_id`
         $this->dropIndex(
@@ -74,11 +53,7 @@ class m200310_070501_create_junction_table_for_book_and_author_tables extends Mi
             '{{%book_author}}'
         );
 
-        // drops foreign key for table `{{%author}}`
-        $this->dropForeignKey(
-            '{{%fk-book_author-author_id}}',
-            '{{%book_author}}'
-        );
+
 
         // drops index for column `author_id`
         $this->dropIndex(

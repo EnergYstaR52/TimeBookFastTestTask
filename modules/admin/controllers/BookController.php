@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Author;
 use Yii;
 use app\models\Book;
 use app\models\BookSerach;
@@ -73,14 +74,17 @@ class BookController extends Controller
      */
     public function actionCreate()
     {
+        $author = new Author();
         $model = new Book();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->authors = Yii::$app->request->post("Book")['authors'];
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $model, 'author' => $author
         ]);
     }
 

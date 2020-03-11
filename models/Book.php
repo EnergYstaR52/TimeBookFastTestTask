@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 /**
  * This is the model class for table "book".
  *
@@ -16,6 +16,18 @@ use Yii;
  */
 class Book extends \yii\db\ActiveRecord
 {
+
+    public function behaviors()
+    {
+        return [
+            'saveRelations' => [
+                'class'     => SaveRelationsBehavior::className(),
+                'relations' => [
+                    'authors' => ['cascadeDelete' => true],
+                ],
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,7 @@ class Book extends \yii\db\ActiveRecord
         return [
             [['description'], 'string'],
             [['title'], 'string', 'max' => 255],
+            [['title', 'description'], 'required']
         ];
     }
 
@@ -48,16 +61,6 @@ class Book extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[BookAuthors]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBookAuthors()
-    {
-        return $this->hasMany(BookAuthor::className(), ['book_id' => 'id'])->inverseOf('book');
-    }
-
-    /**
      * Gets query for [[Authors]].
      *
      * @return \yii\db\ActiveQuery
@@ -65,5 +68,16 @@ class Book extends \yii\db\ActiveRecord
     public function getAuthors()
     {
         return $this->hasMany(Author::className(), ['id' => 'author_id'])->viaTable('book_author', ['book_id' => 'id']);
+    }
+
+    public function getAuthorsNames()
+    {
+       $authors = [];
+       foreach ($this->authors as $a) {
+
+           $authors[] = $a->name;
+
+       }
+       return implode(',' ,$authors);
     }
 }

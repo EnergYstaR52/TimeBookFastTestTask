@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "author".
  *
@@ -44,23 +44,21 @@ class Author extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[BookAuthors]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBookAuthors()
-    {
-        return $this->hasMany(BookAuthor::className(), ['author_id' => 'id'])->inverseOf('author');
+    public function  getAuthorsArray() {
+        return ArrayHelper::map( $this->find()->all(),'id','name');
     }
-
     /**
      * Gets query for [[Books]].
      *
      * @return \yii\db\ActiveQuery
      */
+
     public function getBooks()
     {
         return $this->hasMany(Book::className(), ['id' => 'book_id'])->viaTable('book_author', ['author_id' => 'id']);
+    }
+
+    public function getBooksCount() {
+        return $this->hasMany(Book::className(), ['id' => 'book_id'])->viaTable('book_author', ['author_id' => 'id'])->count();
     }
 }
