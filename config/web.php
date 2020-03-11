@@ -15,11 +15,17 @@ $config = [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ],
+        'api' => [
+            'class' => 'app\modules\api\Module',
+        ],
     ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'fsgsds3242342fsdfsfsgsdg3dgfdg',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -52,6 +58,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/v1/book'], 'pluralize' => false],
             ],
         ],
 
